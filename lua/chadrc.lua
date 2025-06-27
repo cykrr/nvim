@@ -6,12 +6,13 @@
 local M = {}
 
 M.base46 = {
-	theme = "onedark",
+  theme = "ashes",
+  transparency = false,
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+  -- hl_override = {
+  -- 	Comment = { italic = true },
+  -- 	["@comment"] = { italic = true },
+  -- },
 }
 
 -- M.nvdash = { load_on_startup = true }
@@ -20,5 +21,11 @@ M.base46 = {
 --          lazyload = false
 --      }
 --}
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    vim.bo[args.buf].formatexpr = "v:lua.vim.lsp.formatexpr"
+  end,
+})
 
 return M
