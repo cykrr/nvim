@@ -35,3 +35,22 @@ require "autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+if os.getenv('SSH_TTY') then
+    -- Use Method 1 (OSC 52) for remote sessions
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
+else
+    -- Use standard wl-copy/wl-paste for local Wayland
+    vim.opt.clipboard = 'unnamedplus'
+end
+

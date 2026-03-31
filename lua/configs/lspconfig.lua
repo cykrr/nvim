@@ -1,7 +1,5 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local lspconfig = require "lspconfig"
-
 -- EXAMPLE
 local servers = {
   "html",
@@ -9,33 +7,18 @@ local servers = {
   "clangd",
   "emmet_language_server",
   "ts_ls",
-  "gopls"
+  "gopls",
+  "basedpyright",
+  "luals"
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"
 
--- lsps with default config
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = nvlsp.on_attach,
-    on_init = nvlsp.on_init,
+  -- NEW API: Use vim.lsp.config to define the server
+  vim.lsp.config(lsp, {
     capabilities = nvlsp.capabilities,
-  }
+  })
+  -- Then enable it
+  vim.lsp.enable(lsp)
 end
-
--- configuring single server, example: typescript
--- lspconfig.ts_ls.setup {
---   on_attach = nvlsp.on_attach,
---   on_init = nvlsp.on_init,
---   capabilities = nvlsp.capabilities,
--- }
-local pid = vim.fn.getpid()
-lspconfig.omnisharp.setup {
-  on_attach = nvlsp.on_attach,
-  on_init = nvlsp.on_init,
-  capabilites = nvlsp.capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
-  cmd = {"dotnet", "/usr/lib/omnisharp/OmniSharp.dll"}
-}

@@ -49,44 +49,35 @@ return {
       },
     },
   },
+
   {
-    "S1M0N38/love2d.nvim",
+    "karb94/neoscroll.nvim",
     event = "VeryLazy",
-    opts = { },
-    keys = {
-      { "<leader>v", ft = "lua", desc = "LÖVE" },
-      { "<leader>vv", "<cmd>LoveRun<cr>", ft = "lua", desc = "Run LÖVE" },
-      { "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
-    },
+    config = function()
+      local neoscroll = require("neoscroll")
+      neoscroll.setup({
+        -- You can tweak these
+        easing = "quadratic",
+        hide_cursor = true,
+        performance_mode = false,
+      })
 
-    {
-      "karb94/neoscroll.nvim",
-      event = "VeryLazy",
-      config = function()
-        local neoscroll = require("neoscroll")
-        neoscroll.setup({
-          -- You can tweak these
-          easing = "quadratic",
-          hide_cursor = true,
-          performance_mode = false,
-        })
-
-        local keymap = {
-          ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 250 }) end,
-          ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 250 }) end,
-          ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 450 }) end,
-          ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 450 }) end,
-          ["<C-y>"] = function() neoscroll.scroll(-0.10, { move_cursor = false, duration = 100 }) end,
-          ["<C-e>"] = function() neoscroll.scroll(0.10, { move_cursor = false, duration = 100 }) end,
-          ["zt"]    = function() neoscroll.zt({ half_win_duration = 250 }) end,
-          ["zz"]    = function() neoscroll.zz({ half_win_duration = 250 }) end,
-          ["zb"]    = function() neoscroll.zb({ half_win_duration = 250 }) end,
-        }
-        for key, func in pairs(keymap) do
-          vim.keymap.set({ "n", "v", "x" }, key, func, { silent = true })
-        end
-      end,
-    }
+      local keymap = {
+        ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 250 }) end,
+        ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 250 }) end,
+        ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 450 }) end,
+        ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 450 }) end,
+        ["<C-y>"] = function() neoscroll.scroll(-0.10, { move_cursor = false, duration = 100 }) end,
+        ["<C-e>"] = function() neoscroll.scroll(0.10, { move_cursor = false, duration = 100 }) end,
+        ["zt"]    = function() neoscroll.zt({ half_win_duration = 250 }) end,
+        ["zz"]    = function() neoscroll.zz({ half_win_duration = 250 }) end,
+        ["zb"]    = function() neoscroll.zb({ half_win_duration = 250 }) end,
+      }
+      for key, func in pairs(keymap) do
+        vim.keymap.set({ "n", "v", "x" }, key, func, { silent = true })
+      end
+    end,
+  },
 }
 
 
@@ -114,4 +105,4 @@ return {
   -- 		},
   -- 	},
   -- },
-}
+-- }

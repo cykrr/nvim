@@ -28,4 +28,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function(data)
+    -- buffer is a real file on the disk
+    local real_file = vim.fn.filereadable(data.file) == 1
+
+    -- buffer is a directory
+    local directory = vim.fn.isdirectory(data.file) == 1
+
+    if real_file then
+      -- open the tree, find the file but don't focus it
+      require("nvim-tree.api").tree.toggle({ find_file = true, focus = false })
+    elseif directory then
+      -- change to the directory and open the tree
+      vim.cmd.cd(data.file)
+      require("nvim-tree.api").tree.open()
+    end
+  end,
+})
+
 return M
+
+
