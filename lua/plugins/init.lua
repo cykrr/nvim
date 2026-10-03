@@ -78,31 +78,67 @@ return {
       end
     end,
   },
+
+  {
+    'vyfor/cord.nvim',
+    lazy = false,
+    ---@type CordConfig
+    opts = {
+      -- log_level = "debug",
+      advanced  = {
+        server = {
+          -- pipe_path = '/tmp/discord-ipc-0'
+        }
+      }
+    }
+  },
+
+  {
+    "nvimdev/dashboard-nvim",
+    event = "VimEnter",
+    config = function()
+      require("dashboard").setup({
+        theme = "hyper",
+        config = {
+          week_header = {
+            enable = true
+          },
+          shortcut = {
+            {desc = "  Update", group = "@property", action = "Lazy update", key = "u"},
+            {desc = "  Files", group = "Label", action = "Telescope find_files", key = "f"},
+            {desc = "  New File", group = "DiagnosticHint", action = "enew", key = "n"},
+          },
+        },
+      })
+    end,
+    dependencies = { { "nvim-tree/nvim-web-devicons"}},
+  }
 }
 
 
-  -- {
-  --   "nvimtools/none-ls.nvim",
-  --   ensure_installed = { "nvim-lua/plenary.nvim" },
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   config = function()
-  --     local null_ls = require "null-ls"
-  --     null_ls.setup {
-  --       sources = { null_ls.builtins.formatting.prettierd },
-  --     }
-  --   end,
-  -- },
 
-  -- test new blink
-  -- { import = "nvchad.blink.lazyspec" },
+    -- {
+      --   "nvimtools/none-ls.nvim",
+      --   ensure_installed = { "nvim-lua/plenary.nvim" },
+      --   event = { "BufReadPre", "BufNewFile" },
+      --   config = function()
+        --     local null_ls = require "null-ls"
+        --     null_ls.setup {
+          --       sources = { null_ls.builtins.formatting.prettierd },
+          --     }
+          --   end,
+          -- },
 
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
--- }
+          -- test new blink
+          -- { import = "nvchad.blink.lazyspec" },
+
+          -- {
+            -- 	"nvim-treesitter/nvim-treesitter",
+            -- 	opts = {
+              -- 		ensure_installed = {
+                -- 			"vim", "lua", "vimdoc",
+                --      "html", "css"
+                -- 		},
+                -- 	},
+                -- },
+                -- }

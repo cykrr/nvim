@@ -6,7 +6,7 @@
 local M = {}
 
 M.base46 = {
-  theme = "dark_horizon",
+  theme = "ashes",
   transparency = false,
 
   -- hl_override = {
@@ -21,7 +21,6 @@ M.base46 = {
 --          lazyload = false
 --      }
 --}
-
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     vim.bo[args.buf].formatexpr = "v:lua.vim.lsp.formatexpr"
@@ -48,6 +47,54 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
+-- Sync with system clipboard
+
+-- vim.opt.clipboard = 'unnamedplus'
+
+
+
+
+
+-- Trigger Docker build on save for LaTeX files
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.tex",
+  callback = function()
+    -- Sends the command to your existing container
+    vim.fn.jobstart("docker run --rm -v .:/paper paper-builder make all", {
+      on_exit = function(_, code)
+        if code == 0 then
+          print("Build Successful")
+        else
+          print("Build Failed - check build.log")
+        end
+      end
+    })
+  end,
+})
+
+vim.g.vimtex_view_method = 'zathura'
+
+-- Crucial: Tell VimTeX where the artifacts are
+vim.g.vimtex_compiler_latexmk = {
+    out_dir = 'paper-build',
+}
+
+-- If you are using the 'cp' method in your Makefile, 
+-- you might need to manually specify the target
+vim.g.vimtex_view_zathura_options = '-x "nvr --remote-silent %f -c %l"'
+
+
+
 return M
-
-
